@@ -1,17 +1,25 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-export default function Postform({onSave, onCancel}) {
+export default function PostForm({onSave}) {
+    return <main>
+        <h1>글쓰기</h1>
+        <PostFormField onSave={onSave} />
+    </main>
+}
+
+function PostFormField({onSave}) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [message, setMessage] = useState("");
 
-    function handleSumit(event) {
+    function handleSubmit(event) {
         event.preventDefault();
         const trimmedTitle = title.trim();
         const trimmedContent = content.trim();
         if (
             trimmedTitle.length < 10 ||
-            trimmedTitle > 50 ||
+            trimmedTitle.length > 50 ||
             trimmedContent.length < 10 
         ) {
             setMessage("제목은 10~50자, 본문은 10자 이상 입력");
@@ -32,7 +40,7 @@ export default function Postform({onSave, onCancel}) {
             <textarea id="content" name="content" required minLength="10" rows="10" value={content} onChange={(event) => setContent(event.target.value)} />
             <p id="form-message" role="status">{message}</p>
             <button type="submit">게시글 등록</button>
-            <a href="/" onClick={(event) => {event.preventDefault(); onCancel();}}>목록으로</a>
+            <Link to="/posts">목록으로</Link>
         </form>
     )
 }
