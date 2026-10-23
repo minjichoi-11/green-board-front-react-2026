@@ -8,8 +8,10 @@ import PostDetail from "./components/PostDetail";
 import Login from "./components/Login";
 import "./style.css";
 
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 // 리액트의 상태 관리
-export default function App() { 
   const [posts, setPosts] = useState([
     {id : 1, title : "첫 번째 게시글", authorNickname: "학생", createdDatetime: "2026-10-04", content: "우끼끼"},
     {id : 2, title : "두 번째 게시글", authorNickname: "강사", createdDatetime: "2026-10-04", content: "바나나"},
@@ -32,13 +34,14 @@ export default function App() {
 
   return (
     <>
-      <BoardHeader />
+      <BoardHeader isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)}/>
       <Routes>
         <Route path="/" element={<PostList posts={posts} onAddPracticePost={addPracticePost} />} />
         <Route path="/posts" element={<PostList posts={posts} onAddPracticePost={addPracticePost} />} />
         <Route path="/posts/new" element={<PostForm onSave={savePost} />} />
         <Route path="/posts/:postId" element={<PostDetail />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
+
       </Routes>
       <BoardFooter />
     </>
