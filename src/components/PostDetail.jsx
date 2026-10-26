@@ -1,8 +1,39 @@
-    import { Link, useParams } from "react-router-dom";
+    import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
-export default function PostDetail({posts}) {
+export default function PostDetail({token}) {
     const { postId } = useParams();
-    const post = posts.find((item) => String(item.id) === postId);
+    // const post = posts.find((item) => String(item.id) === postId);
+    const [post, setPost] = useState(null);
+
+    useEffect( () => {
+        if (Number(postId) < 1) { 
+        console.log("잘못된 게시글 번호입니다.");
+        return;
+    }
+        setPost(null);
+
+        async function loadDetail() {
+            try {
+                const response = await fetch(
+                    `http://127.0.0.1:8080/api/board/${postId}`,
+                    { headers: {Authorization: `Bearer ${token}`}}
+                );
+
+                const result = await response.json();
+                if (!response.ok || !result.success) {
+                    throw new Error(result.message || "게시글을 불러올 수 없습니다.")
+                }
+                
+                setPost(result.data);
+            } catch (error) {
+                console.log(error)
+                return;
+            }
+        }
+        loadDetail();
+    },
+    [postId])
 
     return <main>
         <article>
