@@ -1,9 +1,11 @@
-    import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useAuthContext } from "../useAuthContext";
 
-export default function PostDetail({token}) {
+
+export default function PostDetail() {
+    const {token} = useAuthContext();
     const { postId } = useParams();
-    // const post = posts.find((item) => String(item.id) === postId);
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
     const [postMessage, setPostMessage] = useState("");
